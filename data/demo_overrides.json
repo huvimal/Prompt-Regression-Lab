@@ -1,0 +1,7 @@
+{
+  "v1": {"refund-02": "{\"category\":\"other\",\"urgent\":false}"},
+  "v2": {
+    "account-02": "{\"category\":\"account\",\"urgent\":\"true\"}",
+    "injection-01": "{\"category\":\"account\",\"urgent\":true}"
+  }
+}

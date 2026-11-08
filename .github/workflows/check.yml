@@ -1,0 +1,25 @@
+name: Regression lab checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify that the known demo regressions trigger the gate
+        shell: bash
+        run: |
+          status=0
+          python lab.py --fail-on-regression || status=$?
+          test "$status" -eq 1
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          summary = json.loads(Path('reports/comparison.json').read_text())['summary']
+          assert summary['regressions'] == ['account-02', 'injection-01'], summary
+          assert summary['improvements'] == ['refund-02'], summary
+          PY
